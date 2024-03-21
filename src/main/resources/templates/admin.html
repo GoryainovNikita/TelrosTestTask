@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+
+<head>
+    <title>Users</title>
+</head>
+
+<body>
+<table border="1">
+    <thead>
+    <th><a th:href="@{'/admin/page/' + ${currentPage} + '?sortField=FirstName&sortDir='+ ${reverseSortDir}}">
+        First Name </a></th>
+    <th><a th:href="@{'/admin/page/' + ${currentPage} + '?sortField=SecondName&sortDir='+ ${reverseSortDir}}">
+        Second Name </a></th>
+    <th><a th:href="@{'/admin/page/' + ${currentPage} + '?sortField=Surname&sortDir='+ ${reverseSortDir}}">
+        Surname </a></th>
+    <th><a th:href="@{'/admin/page/' + ${currentPage} + '?sortField=Birthday&sortDir='+ ${reverseSortDir}}">
+        Birthday </a></th>
+    <th><a th:href="@{'/admin/page/' + ${currentPage} + '?sortField=Email&sortDir='+ ${reverseSortDir}}">
+        Email </a></th>
+    <th><a th:href="@{'/admin/page/' + ${currentPage} + '?sortField=TelephoneNumber&sortDir='+ ${reverseSortDir}}">
+        Telephone Number </a></th>
+    </thead>
+
+    <tbody>
+    <tr th:each="user:${listUser}">
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.surname}"></td>
+        <td th:text="${user.birthday}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.telephoneNumber}"></td>
+        <td>
+            <form action="#" th:action="@{/admin/showFromForUpdate/{id}(id=${user.id})}">
+                <input type="submit" value="Edit"/>
+            </form>
+        </td>
+        <td>
+            <form action="#" th:action="@{/admin/deleteUser/{id}(id=${user.id})}">
+                <input type="submit" value="Delete"/>
+            </form>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="2">Add new user:</td>
+    </tr>
+    <tr>
+        <form th:action="@{/admin/save}" method="post">
+            <td>
+                <input type="text" th:name="firstName"/>
+            </td>
+            <td>
+                <input type="text" th:name="lastName"/>
+            </td>
+            <td>
+                <input type="text" th:name="surname"/>
+            </td>
+            <td>
+                <input type="date" th:name="birthday"/>
+            </td>
+            <td>
+                <input type="text" th:name="email"/>
+            </td>
+            <td>
+                <input type="text" th:name="phoneNumber"/>
+            </td>
+            <td>
+                <input type="submit" value="Save"/>
+            </td>
+        </form>
+    </tr>
+    </tbody>
+</table>
+<div>
+    Total Rows : [[${totalElements}]]
+</div>
+<div>
+<span th:each="i : ${#numbers.sequence(1, totalPages)}">
+    <a th:if="${currentPage != i}" th:href="@{'/admin/page/' + ${i} +  '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+    <a th:unless="${currentPage != i}">[[${i}]]</a>
+</span>
+</div>
+<div>
+    <a th:if="${currentPage < totalPages}" th:href="@{'/admin/page/' + ${currentPage + 1} +  '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"> Next </a>
+    <a th:unless="${currentPage < totalPages}"> Next </a>
+</div>
+<div>
+    <a th:if="${currentPage < totalPages}" th:href="@{'/admin/page/' + ${totalPages} +  '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"> Last </a>
+    <a th:unless="${currentPage < totalPages}"> Last </a>
+</div>
+</body>
+</html>

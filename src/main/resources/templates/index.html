@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Users</title>
+</head>
+
+<body>
+<table border="1">
+    <thead>
+    <th><a th:href="@{'/user/page/' + ${currentPage} + '?sortField=FirstName&sortDir='+ ${reverseSortDir}}">
+        First Name </a></th>
+    <th><a th:href="@{'/user/page/' + ${currentPage} + '?sortField=SecondName&sortDir='+ ${reverseSortDir}}">
+        Second Name </a></th>
+    <th><a th:href="@{'/user/page/' + ${currentPage} + '?sortField=Surname&sortDir='+ ${reverseSortDir}}">
+        Surname </a></th>
+    <th><a th:href="@{'/user/page/' + ${currentPage} + '?sortField=Birthday&sortDir='+ ${reverseSortDir}}">
+        Birthday </a></th>
+    <th><a th:href="@{'/user/page/' + ${currentPage} + '?sortField=Email&sortDir='+ ${reverseSortDir}}">
+        Email </a></th>
+    <th><a th:href="@{'/user/page/' + ${currentPage} + '?sortField=TelephoneNumber&sortDir='+ ${reverseSortDir}}">
+        Telephone Number </a></th>
+    </thead>
+
+    <tbody>
+    <tr th:each="user:${listUser}">
+        <td th:text="${user.firstName}"></td>
+        <td th:text="${user.lastName}"></td>
+        <td th:text="${user.surname}"></td>
+        <td th:text="${user.birthday}"></td>
+        <td th:text="${user.email}"></td>
+        <td th:text="${user.telephoneNumber}"></td>
+    </tr>
+    </tbody>
+</table>
+<div>
+    Total Rows : [[${totalElements}]]
+</div>
+<div>
+<span th:each="i : ${#numbers.sequence(1, totalPages)}">
+    <a th:if="${currentPage != i}" th:href="@{'/user/page/' + ${i} +  '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}">[[${i}]]</a>
+    <a th:unless="${currentPage != i}">[[${i}]]</a>
+</span>
+</div>
+<div>
+    <a th:if="${currentPage < totalPages}" th:href="@{'/user/page/' + ${currentPage + 1} +  '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"> Next </a>
+    <a th:unless="${currentPage < totalPages}"> Next </a>
+</div>
+<div>
+    <a th:if="${currentPage < totalPages}" th:href="@{'/user/page/' + ${totalPages} +  '?sortField=' + ${sortField} + '&sortDir=' + ${sortDir}}"> Last </a>
+    <a th:unless="${currentPage < totalPages}"> Last </a>
+</div>
+</body>
+</html>
